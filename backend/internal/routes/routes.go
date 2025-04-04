@@ -10,15 +10,11 @@ import (
 func Routes(r *gin.Engine) {
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:5173"},
-		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowHeaders:     []string{"Origin", "Content-Type","Accept", "Authorization"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
 	}))
-
-  r.OPTIONS("/*path", func(c *gin.Context) {
-		c.AbortWithStatus(204)
-	})
 
 	r.POST("/register", controllers.Register)
 	r.POST("/login", controllers.Login)
