@@ -3,6 +3,7 @@ package middleware
 import (
 	"net/http"
 	"os"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
@@ -21,7 +22,7 @@ func AuthMiddleware(c *gin.Context) {
 	jwtSecretKey := []byte(os.Getenv("JWT_SECRET"))
 	token, err := jwt.Parse(
 		tokenString, func(token *jwt.Token) (interface{}, error) {
-						return jwtSecretKey, nil
+			return jwtSecretKey, nil
 		}, jwt.WithValidMethods([]string{jwt.SigningMethodHS256.Alg()}))
 	// Token validation
 	if err != nil {
@@ -43,11 +44,16 @@ func AuthMiddleware(c *gin.Context) {
 
 	// Store user ID in context
 	if sub, ok := claims["sub"].(string); ok {
-		c.Set("userID", sub)
+		uid, err := strconv.ParseUint(sub, 10, 64)
+		if err != nil {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid user ID"})
+			c.Abort()
+			return
+		}
+		c.Set("userID", uint(uid))
 	} else {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
 		c.Abort()
 		return
 	}
-	c.Next()
 }

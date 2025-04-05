@@ -23,5 +23,7 @@ func Routes(r *gin.Engine) {
 	protected := r.Group("/")
 	protected.Use(middleware.AuthMiddleware)
 	protected.POST("/upload", controllers.UploadFile)
+	protected.POST("/memes/:id/like", controllers.LikeMeme)
 	protected.GET("/memes", controllers.DiscoverMemes)
+
 }

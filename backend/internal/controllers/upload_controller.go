@@ -42,8 +42,17 @@ func UploadFile(c *gin.Context) {
 		return
 	}
 
+	userID := c.GetUint("userID")
+	var user models.User
+	if err := database.DB.First(&user, userID).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "User not found"})
+		return
+	}
+
 	url := models.Meme{
-		Url: uploadResult.SecureURL,
+		Url:      uploadResult.SecureURL,
+		UserID:   userID,
+		Username: user.Username,
 	}
 
 	if err := database.DB.Create(&url).Error; err != nil {
