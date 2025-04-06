@@ -1,6 +1,8 @@
 package routes
 
 import (
+	"os"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/krushalgopale/memex/internal/controllers"
@@ -8,9 +10,10 @@ import (
 )
 
 func Routes(r *gin.Engine) {
+	renderUrl := os.Getenv("RENDER_URL")
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:5173"},
-		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
+		AllowOrigins:     []string{"http://localhost:5173", renderUrl},
+		AllowMethods:     []string{"GET", "POST", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
@@ -25,5 +28,4 @@ func Routes(r *gin.Engine) {
 	protected.POST("/upload", controllers.UploadFile)
 	protected.POST("/memes/:id/like", controllers.LikeMeme)
 	protected.GET("/memes", controllers.DiscoverMemes)
-
 }
