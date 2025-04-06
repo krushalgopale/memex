@@ -100,8 +100,15 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	// Set jwt token in cookie
-	c.SetCookie("jwt", token, int(time.Hour.Seconds()*24), "/", "", true, true)
+	http.SetCookie(c.Writer, &http.Cookie{
+		Name:     "jwt",
+		Value:    token,
+		Path:     "/",
+		MaxAge:   3600,
+		HttpOnly: true,
+		Secure:   true,
+		SameSite: http.SameSiteNoneMode,
+	})
 
 	c.JSON(http.StatusAccepted, gin.H{"message": "Login Successful"})
 }
@@ -109,7 +116,16 @@ func Login(c *gin.Context) {
 // Logout
 
 func Logout(c *gin.Context) {
-	c.SetCookie("jwt", "", -1, "/", "", true, true)
+
+	http.SetCookie(c.Writer, &http.Cookie{
+		Name:     "jwt",
+		Value:    "",
+		Path:     "/",
+		MaxAge:   -1,
+		HttpOnly: true,
+		Secure:   true,
+		SameSite: http.SameSiteNoneMode,
+	})
 
 	c.JSON(http.StatusAccepted, gin.H{"message": "Logout successful"})
 }
