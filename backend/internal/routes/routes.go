@@ -12,7 +12,7 @@ import (
 func Routes(r *gin.Engine) {
 	renderUrl := os.Getenv("RENDER_URL")
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:5173", renderUrl},
+		AllowOrigins:     []string{renderUrl},
 		AllowMethods:     []string{"GET", "POST", "OPTIONS"},
 		AllowHeaders:     []string{"Access-Control-Allow-Origin","Origin", "Content-Type", "Accept", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
