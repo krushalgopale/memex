@@ -10,9 +10,8 @@ import (
 )
 
 func Routes(r *gin.Engine) {
-	renderUrl := os.Getenv("RENDER_URL")
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{renderUrl},
+		AllowOrigins:     []string{"https://memex-nf9k.onrender.com"},
 		AllowMethods:     []string{"GET", "POST", "OPTIONS"},
 		AllowHeaders:     []string{"Access-Control-Allow-Origin","Origin", "Content-Type", "Accept", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
