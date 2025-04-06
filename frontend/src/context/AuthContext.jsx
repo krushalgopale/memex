@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await fetch('http://localhost:8080/memes', {
+        const response = await fetch('https://memex-nf9k.onrender.com/memes', {
           method: 'GET',
           credentials: 'include', 
         });
@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      const response = await fetch('http://localhost:8080/logout', {
+      const response = await fetch('https://memex-nf9k.onrender.com/logout', {
         method: 'POST',
         credentials: 'include', 
       });
